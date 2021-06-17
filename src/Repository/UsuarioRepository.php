@@ -2,11 +2,26 @@
 
 namespace App\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use App\Entity\Usuario;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class UsuarioRepository extends EntityRepository
+class UsuarioRepository extends ServiceEntityRepository
 {
 
-   
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Usuario::class);
+    }
+
+    public function getUsuariosRedComercial()
+    {
+        return Array();
+    }
+
+    public function getUsuariosJefeProyecto()
+    {
+        return Array();
+    }
 
 }

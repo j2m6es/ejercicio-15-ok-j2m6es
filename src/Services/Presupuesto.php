@@ -19,7 +19,7 @@ class Presupuesto
 {
 	private $presupuesto;
 
-	function __construct($presupuesto)
+	function __construct(EntityPresupuesto $presupuesto)
 	{
 		$this->presupuesto=$presupuesto;
 	}

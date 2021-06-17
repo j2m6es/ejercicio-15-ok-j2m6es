@@ -8,12 +8,17 @@ use App\Entity\Usuario;
 use App\Repository\ProyectoRepository;
 use App\Repository\TareaRepository;
 use App\Repository\UsuarioRepository;
+use App\Services\Proyecto as ServicesProyecto;
 
 /**
  * Clase en la que se definen las tareas, se asocian a los proyectos y gestión de estados
  */
 class Tarea
 {
+	const ESTADO_NUEVO = 0;
+	const ESTADO_PROCESO = 1;
+	const ESTADO_FINALIZADO = 2;
+
 	/*
         Crear tareas
 
@@ -38,6 +43,9 @@ class Tarea
      */
 	public function asociarTecnico(EntityTarea $tarea, Usuario $usuario):bool
 	{
+		// Avisar al tecnico sobre la tarea asignada
+		$this->envioEmail->enviarEmailTecnico( $this->mailer, "Tarea asignada" , "Tarea asignada ...", $tarea->getTecnico());
+
 		return true;
 	}
 	
@@ -52,6 +60,9 @@ class Tarea
      */
 	public function cambiarTecnico(EntityTarea $tarea, Usuario $usuario):bool
 	{
+		// Avisar al tecnico sobre la tarea asignada
+		$this->envioEmail->enviarEmailTecnico( $this->mailer, "Tarea asignada" , "Tarea asignada ...", $tarea->getTecnico());
+
 		return true;
 	}
 	
@@ -76,8 +87,12 @@ class Tarea
 
         Respuesta: booleano que indica si se ha realizado bien la operación
      */
-	public function cambiarEstado(Proyecto $proyecto):bool
+	public function cambiarEstado(Proyecto $proyecto, EntityTarea $tarea):bool
 	{
+		if($tarea->getEstado == $this::ESTADO_FINALIZADO)
+		{
+			$this->envioEmail->enviarEmailJefeProyecto( $this->mailer, "Tarea finalizada" , "Tarea finalizada ...", $proyecto->getJefeProyecto());
+		}
 		return true;
 	}
 	

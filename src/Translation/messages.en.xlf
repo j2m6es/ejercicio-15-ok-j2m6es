@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+		<body>
+		
+			<!-- Etiquetas Constraint -->
+            <trans-unit id="email_usuario_presupuesto_iniciado">
+                <source>email_usuario_presupuesto_iniciado</source>
+                <target>Se ha iniciado un presupuesto ...</target>
+            </trans-unit>
+            
+        </body>
+    </file>
+</xliff>

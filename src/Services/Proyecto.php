@@ -5,12 +5,26 @@ namespace App\Services;
 use App\Entity\Proyecto as EntityProyecto;
 use App\Entity\Usuario;
 use App\Repository\UsuarioRepository;
+use Symfony\Component\Mailer\MailerInterface;
 
 /**
  * Clase gestora de proyectos, asignación de gestores y participantes de los proyectos, gestión de estados
  */
 class Proyecto
 {
+	const ESTADO_NUEVO = 0;
+	const ESTADO_PROCESO = 1;
+	const ESTADO_FINALIZADO = 2;
+
+    private $mailer;
+    private $envioEmail;
+
+    function __construct(MailerInterface $mailer, EnvioEmail $envioEmail)
+    {
+        $this->mailer = $mailer;
+        $this->envioEmail = $envioEmail;
+    }
+
 	/*
         Crea Proyecto
 
@@ -21,6 +35,12 @@ class Proyecto
      */
 	public function crearProyecto(Array $infoCliente):bool
 	{
+		$proyecto = new EntityProyecto();
+		// ... creamos proyecto
+		
+		// Enviamos correo al solicitante con presupuesto final y enlace al panel del solicitante
+		$this->envioEmail->enviarEmailCliente( $this->mailer, "Presupuesto final" , "Se inicia proyecto ...", $proyecto->getCliente());
+
 		return true;
 	}
 	
@@ -113,6 +133,11 @@ class Proyecto
      */
 	public function cambiarEstadoProyecto(EntityProyecto $proyecto, $estado):bool
 	{
+		// Enviamos correo al solicitante
+		$this->envioEmail->enviarEmailCliente( $this->mailer, "Presupuesto cambia de estado" , "Presupuesto cambia de estado ...", $proyecto->getCliente());
+
+		// Enviamos correo a los tecnicos asociados al proyecto
+		$this->envioEmail->enviarEmailTecnico( $this->mailer, "Presupuesto cambia de estado" , "Presupuesto cambia de estado ...", $proyecto->getTecnicos());
 		return true;
 	}
 	
