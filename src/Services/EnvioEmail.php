@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Entity\Cliente;
 use App\Entity\Usuario;
 use App\Repository\UsuarioRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
@@ -18,9 +16,8 @@ class EnvioEmail
     private $container;
     private $usuarioReposity;
 
-    public function __construct(ContainerInterface $container, UsuarioRepository $usuarioReposity)
+    public function __construct(UsuarioRepository $usuarioReposity)
     {
-        $this->container = $container;
         $this->usuarioReposity = $usuarioReposity;
     }
 
@@ -40,7 +37,7 @@ class EnvioEmail
     */
 	public function enviarEmailCliente(MailerInterface $mailer, string $asunto, string $mensaje, Cliente $cliente):bool
     {
-        $emailEmpresa = $this->container->getParameter('emailEmpresa');
+        $emailEmpresa = $this->get('emailEmpresa');
         $emailCliente = $cliente->getEmail();
 
         $email = (new Email())
@@ -67,7 +64,7 @@ class EnvioEmail
 	public function enviarEmailRedComercial(MailerInterface $mailer, string $asunto, string $mensaje):bool
     {
         $usuariosRedComercial = $this->usuarioReposity->getUsuariosRedComercial();
-        $emailEmpresa = $this->container->getParameter('emailEmpresa');
+        $emailEmpresa = $this->get('emailEmpresa');
 
         foreach( $usuariosRedComercial as $usuario )
         {
@@ -99,7 +96,7 @@ class EnvioEmail
 	*/
 	public function enviarEmailJefeProyecto(MailerInterface $mailer,string $asunto, string $mensaje, Usuario $usuario):bool
     {
-        $emailEmpresa = $this->container->getParameter('emailEmpresa');
+        $emailEmpresa = $this->get('emailEmpresa');
         $emailUsuario = $usuario->getEmail();
 
         $email = (new Email())
@@ -125,7 +122,7 @@ class EnvioEmail
 	public function enviarEmailJefesProyecto(MailerInterface $mailer, string $asunto, string $mensaje):bool
     {
         $usuariosJefeProyecto = $this->usuarioReposity->getUsuariosJefeProyecto();
-        $emailEmpresa = $this->container->getParameter('emailEmpresa');
+        $emailEmpresa = $this->get('emailEmpresa');
 
         foreach( $usuariosJefeProyecto as $usuario )
         {
@@ -160,7 +157,7 @@ class EnvioEmail
             $tecnicos = array($tecnicos);
         }
 
-        $emailEmpresa = $this->container->getParameter('emailEmpresa');
+        $emailEmpresa = $this->get('emailEmpresa');
 
         foreach( $tecnicos as $usuario )
         {
