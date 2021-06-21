@@ -12,11 +12,17 @@ class Tarea
 	protected $tecnico;
 
     /**
+	 * @ORM\
+	 */
+	protected $proyecto;
+
+    /**
     *   @var string
     *   @ORM\Column(type="string",	nullable=false)
     */
+    protected $estado;
 
-        /**
+    /**
      * Set tecnico
      *
      * @param string $tenico
@@ -38,6 +44,30 @@ class Tarea
     public function getTecnico()
     {
         return $this->tecnico;
+    }
+
+        /**
+     * Set proyecto
+     *
+     * @param string $proyecto
+     *
+     * @return Proyecto
+     */
+    public function setProyecto($proyecto)
+    {
+        $this->proyecto = $proyecto;
+
+        return $this;
+    }
+
+    /**
+     * Get proyecto
+     *
+     * @return Proyecto
+     */
+    public function getproyecto()
+    {
+        return $this->proyecto;
     }
 
     /**

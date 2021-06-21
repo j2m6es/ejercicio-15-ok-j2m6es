@@ -26,6 +26,7 @@ class Proyecto
     *   @var string
     *   @ORM\Column(type="string",	nullable=false)
     */
+    protected $estado;
 
     /**
 	 * Constructor
