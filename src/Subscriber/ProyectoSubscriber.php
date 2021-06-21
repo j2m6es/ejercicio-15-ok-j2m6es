@@ -3,9 +3,11 @@
 namespace App\Subscriber;
 
 use App\Services\EnvioEmail;
+use App\Services\Tarea;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Component\Workflow\Event\GuardEvent;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProyectoSubscriber implements EventSubscriberInterface
@@ -22,7 +24,8 @@ class ProyectoSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'workflow.gestion_proyecto.guard' => 'enviarCorreosCambioEstadoProyecto'
+            'workflow.gestion_proyecto.guard' => 'enviarCorreosCambioEstadoProyecto',
+            'workflow.gestion_proyecto.guard.finalizar' => 'controlFinalizacionProyecto'
         );
     }
 
@@ -37,7 +40,26 @@ class ProyectoSubscriber implements EventSubscriberInterface
         $this->envioEmail->enviarEmailCliente( $this->mailer, "Cambio estado proyecto", $msj, $cliente);
 
         // Enviamos información de cambio de estado a los tecnicos
-        $this->envioEmail->enviarEmailTecnico($this->mailer, "Cambio estado proyecto", $msj, $cliente);
+        $this->envioEmail->enviarEmailTecnico($this->mailer, "Cambio estado proyecto", $msj, $tecnicos);
     }
 
+    public function controlFinalizacionProyecto(GuardEvent $event)
+    {
+        $proyecto = $event->getSubject();
+        $tareas = $proyecto->getTareas();
+        $todastareasFinalizadas = true;
+        
+        foreach( $tareas as $tarea)
+        {
+            if($tarea->getEstado()!=Tarea::ESTADO_FINALIZADO)
+            {
+                $todastareasFinalizadas = false;
+            }
+        }
+
+        if($todastareasFinalizadas)
+        {
+            $event->setBlocked(true);
+        }
+    }
 }
