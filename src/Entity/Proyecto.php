@@ -23,6 +23,11 @@ class Proyecto
     protected $jefe_proyecto;
 
     /**
+    *   @var string
+    *   @ORM\Column(type="string",	nullable=false)
+    */
+
+    /**
 	 * Constructor
 	 */
 	public function __construct()
@@ -100,5 +105,29 @@ class Proyecto
     public function getJefeproyecto()
     {
         return $this->jefeproyecto;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param string $estado
+     *
+     * @return Proyecto
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }

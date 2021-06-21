@@ -12,6 +12,12 @@ class Presupuesto
     protected $cliente;
 
     /**
+    *   @var string
+    *   @ORM\Column(type="string",	nullable=false)
+    */
+    protected $estado;
+
+    /**
      * Set cliente
      *
      * @param string $cliente
@@ -33,5 +39,29 @@ class Presupuesto
     public function getCliente()
     {
         return $this->cliente;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param string $estado
+     *
+     * @return Presupuesto
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }

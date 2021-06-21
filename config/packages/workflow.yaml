@@ -1,0 +1,66 @@
+framework:
+    workflows:
+
+        gestion_presupuesto:
+            type:	'workflow'
+            marking_store:
+                type:	'single_state'
+            arguments:
+                - 'estado'
+            supports:
+                - App\Entity\Presupuesto
+            places:
+                - pendiente
+                - aprobada
+                - rechazada
+            initial_place:	pendiente
+            transitions:
+                aprobar:
+                    from:	pendiente
+                    to: aprobada
+                rechazar:
+                    from:	pendiente
+                    to: rechazada
+
+        gestion_proyecto:
+            type:	'workflow'
+            marking_store:
+                type:	'single_state'
+            arguments:
+                - 'estado'
+            supports:
+                - App\Entity\Proyecto
+            places:
+                - aprobado
+                - enproceso
+                - terminado
+            initial_place:	aprobado
+            transitions:
+                iniciar:
+                    from:	aprobado
+                    to: enproceso
+                finalizar:
+                    from:	enproceso
+                    to: terminado
+
+        gestion_tarea:
+            type:	'workflow'
+            marking_store:
+                type:	'single_state'
+            arguments:
+                - 'estado'
+            supports:
+                - App\Entity\Tarea
+            places:
+                - sin_asignar
+                - asignada
+                - terminada
+            initial_place:	sin_asignar
+            transitions:
+                asignar:
+                    from:	sin_asignar
+                    to: asignada
+                terminar:
+                    from:	asignada
+                    to: terminada
+
